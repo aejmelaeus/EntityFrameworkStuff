@@ -12,6 +12,6 @@ namespace Database
         public DbSet<Group> Groups { get; set; }
         public DbSet<SingleLicense> SingleLicenses { get; set; }
         public DbSet<GroupLicense> GroupLicenses { get; set; }
-
+        public DbSet<Product> Products { get; set; }
     }
 }
