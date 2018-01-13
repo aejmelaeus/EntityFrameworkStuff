@@ -5,6 +5,11 @@ namespace Database
 {
     public class Context : DbContext
     {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Licenses;Trusted_Connection=True;");
+        }
+
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<TenantUser> TenantUsers { get; set; }

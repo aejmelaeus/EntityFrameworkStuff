@@ -9,6 +9,8 @@ namespace Database.Entitites
         public Guid ExternalId { get; set; }
 
         public string Name { get; set; }
+        public DateTime CreatedUtc { get; set; }
+        public int CreatedByUserId { get; set; }
 
         public Tenant Tenant { get; set; }
         public List<TenantUser> Members { get; set; }
