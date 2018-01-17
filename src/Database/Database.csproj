@@ -103,7 +103,6 @@
     <Compile Include="Entitites\Group.cs" />
     <Compile Include="Entitites\GroupLicense.cs" />
     <Compile Include="Entitites\Product.cs" />
-    <Compile Include="Entitites\Role.cs" />
     <Compile Include="Entitites\SingleLicense.cs" />
     <Compile Include="Entitites\Tenant.cs" />
     <Compile Include="Entitites\TenantUser.cs" />

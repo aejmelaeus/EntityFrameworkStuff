@@ -7,6 +7,12 @@ namespace TenantGroups
 {
     public class TenantGroupsAggregate : IAggregateRoot
     {
+        private int _id;
+
+        private readonly List<Group> _groups = new List<Group>();
+
+        public IEnumerable<Group> Groups => _groups.AsReadOnly();
+
         public void CreateGroup(Guid loggedInUserId, string name)
         {
 
@@ -18,7 +24,7 @@ namespace TenantGroups
         }
 
         public void AddUserToGroup(Guid loggedInUserId, Guid groupId, Guid userId)
-        {
+        { 
 
         }
 
@@ -33,7 +39,7 @@ namespace TenantGroups
         }
     }
 
-    public class TenantGroup
+    public class Group
     {
 
     }
