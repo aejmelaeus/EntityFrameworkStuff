@@ -1,17 +1,26 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Common;
 
 namespace Database.Entitites
 {
-    public class TenantUser
+    internal class TenantUser
     {
         public int Id { get; set; }
 
+        [Required]
         public Guid TenantId { get; set; }
+
+        [Required]
         public Tenant Tenant { get; set; }
 
-        public Guid UserId { get; set; }  
+        [Required]
+        public Guid UserId { get; set; }
+
+        [Required]
         public User User { get; set; }
 
-        public int Role { get; set; }
+        [Required]
+        public TenantRole Role { get; set; }
     }
 }

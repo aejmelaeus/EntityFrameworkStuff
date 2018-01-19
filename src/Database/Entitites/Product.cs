@@ -1,12 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Database.Entitites
 {
-    public class Product
+    internal class Product
     {
-        public int Id { get; set; }
-        public Guid ExternalId { get; set; }
+        public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(128)]
         public string Name { get; set; }
     }
 }
