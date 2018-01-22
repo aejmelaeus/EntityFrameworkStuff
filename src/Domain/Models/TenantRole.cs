@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Domain.Models
 {
     public enum TenantRole
     {

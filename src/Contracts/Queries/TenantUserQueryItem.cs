@@ -1,5 +1,4 @@
 ﻿using System;
-using Common;
 
 namespace Contracts.Queries
 {
@@ -8,6 +7,6 @@ namespace Contracts.Queries
         public Guid Id { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }
-        public TenantRole Role { get; set; }
+        public string Role { get; set; }
     }
 }

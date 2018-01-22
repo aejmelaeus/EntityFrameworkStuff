@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Messages\Commands\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
