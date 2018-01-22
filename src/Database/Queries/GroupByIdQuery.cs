@@ -1,38 +1,41 @@
-﻿//using System;
-//using System.Threading.Tasks;
-//using Contracts.Queries;
-//using Interfaces.Queries;
+﻿using System;
+using System.Threading.Tasks;
+using Contracts.Queries;
+using Domain.Models;
+using Interfaces.Queries;
+using Microsoft.EntityFrameworkCore;
 
-//namespace Database.Queries
-//{
-//    public class GroupByIdQuery : IGroupQuery
-//    {
-//        private readonly DatabaseContext _context;
+namespace Database.Queries
+{
+    public class GroupByIdQuery : IGroupQuery
+    {
+        private readonly DatabaseContext _context;
 
-//        public GroupByIdQuery(DatabaseContext context)
-//        {
-//            _context = context;
-//        }
+        internal GroupByIdQuery(DatabaseContext context)
+        {
+            _context = context;
+        }
 
-//        public async Task<GroupQueryItem> Execute(Guid groupId)
-//        {
-//            var group = await _context.Groups
-//                .Include(_ => _.Members)
-//                .SingleOrDefaultAsync(_ => _.Id == groupId);
+        public async Task<GroupQueryItem> Execute(Guid externalId)
+        {
+            var group = await _context.Groups
+                .Include(_ => _.Members)
+                .Include(_ => _.CreatedBy)
+                .SingleOrDefaultAsync(_ => _.ExternalId == externalId);
 
-//            if (group == default(Group))
-//            {
-//                return null;
-//            }
+            if (group == default(Group))
+            {
+                return null;
+            }
 
-//            return new GroupQueryItem
-//            {
-//                CreatedByUserDisplayName = group.CreatedByUserDisplayName,
-//                Name = group.Name,
-//                CreatedByUserId = group.CreatedByUserId,
-//                Id = group.Id,
-//                Members = null // TODO!
-//            };
-//        }
-//    }
-//}
+            return new GroupQueryItem
+            {
+                CreatedByUserDisplayName = group.CreatedBy.DisplayName,
+                Name = group.Name,
+                CreatedByUserId = group.CreatedBy.ExternalId,
+                Id = group.ExternalId,
+                Members = null // TODO!
+            };
+        }
+    }
+}

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrator", "Migrator\Migrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{6A55BAC1-896F-4BB3-ADF9-55005EB7F8EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{6A55BAC1-896F-4BB3-ADF9-55005EB7F8EC}.Release|x64.Build.0 = Release|Any CPU
 		{6A55BAC1-896F-4BB3-ADF9-55005EB7F8EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A55BAC1-896F-4BB3-ADF9-55005EB7F8EC}.Release|x86.Build.0 = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|x64.Build.0 = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{45805C7A-FA9C-4382-A0D1-2A9FF7A1F7DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

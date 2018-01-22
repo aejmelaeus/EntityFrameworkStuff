@@ -6,6 +6,6 @@ namespace Interfaces.Queries
 {
     public interface IGroupQuery
     {
-        Task<GroupQueryItem> Execute(Guid groupId);
+        Task<GroupQueryItem> Execute(Guid externalId);
     }
 }

@@ -5,6 +5,18 @@ namespace Domain.Models
 {
     public class Tenant
     {
+        private Tenant()
+        {
+            // For EF :)
+        }
+
+        public Tenant(string name, int loggedInUserId)
+        {
+            Name = name;
+            ExternalId = Guid.NewGuid();
+            _tenantUsers.Add(new TenantUser(TenantRole.Administrator, loggedInUserId));
+        }
+
         public int Id { get; private set; }
 
         public Guid ExternalId { get; private set; }
