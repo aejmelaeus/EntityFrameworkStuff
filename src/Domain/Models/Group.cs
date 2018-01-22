@@ -5,10 +5,13 @@ using System.Collections.Generic;
 
 namespace Domain.Models
 {
-    public class Group
+    public class Group : Aggretate
     {
-        public int Id { get; private set; }
-        public Guid ExternalId { get; private set; }
+        public Group() : base(Guid.NewGuid())
+        {
+            
+        }
+
         public string Name { get; private set; }
         public DateTime CreatedUtc { get; private set; }
 

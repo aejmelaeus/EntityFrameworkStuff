@@ -1,6 +1,9 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Tests")]
+
 namespace Database
 {
     internal class DatabaseContext : DbContext
@@ -23,6 +26,8 @@ namespace Database
         private static void ConfigureUser(ModelBuilder builder)
         {
             var userEntity = builder.Entity<User>();
+
+            userEntity.HasKey(_ => _.Id);
 
             userEntity.Property(_ => _.DisplayName)
                 .IsRequired()
@@ -60,6 +65,8 @@ namespace Database
         {
             var tenantEntity = builder.Entity<Tenant>();
 
+            tenantEntity.HasKey(_ => _.Id);
+
             tenantEntity.Property(_ => _.ExternalId)
                 .IsRequired();
 
@@ -84,6 +91,8 @@ namespace Database
         {
             var productEntity = builder.Entity<Product>();
 
+            productEntity.HasKey(_ => _.Id);
+
             productEntity.Property(_ => _.ExternalId)
                 .IsRequired();
 
@@ -102,6 +111,8 @@ namespace Database
         {
             var groupLicenseEntity = builder.Entity<GroupLicense>();
 
+            groupLicenseEntity.HasKey(_ => _.Id);
+
             groupLicenseEntity.Property(_ => _.Days)
                 .IsRequired();
 
@@ -112,6 +123,8 @@ namespace Database
         private static void ConfigureGroup(ModelBuilder builder)
         {
             var groupEntity = builder.Entity<Group>();
+
+            groupEntity.HasKey(_ => _.Id);
 
             groupEntity.Property(_ => _.ExternalId)
                 .IsRequired();

@@ -2,10 +2,13 @@
 
 namespace Domain.Models
 {
-    public class GroupLicense
+    public class GroupLicense : Aggretate
     {
-        public int Id { get; private set; }
-        public Guid ExternalId { get; private set; }
+        public GroupLicense() : base(Guid.Empty)
+        {
+            // TODO!
+        }
+
         public int Days { get; private set; }
         public int NumberOfUsers { get; private set; }
         public DateTime? StartDateUtc { get; private set; }

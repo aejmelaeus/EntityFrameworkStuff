@@ -12,7 +12,7 @@ using System;
 namespace Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180122211702_HelloWorld")]
+    [Migration("20180122221900_HelloWorld")]
     partial class HelloWorld
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,8 +61,6 @@ namespace Database.Migrations
                     b.Property<int>("Days");
 
                     b.Property<DateTime?>("EndDateUtc");
-
-                    b.Property<Guid>("ExternalId");
 
                     b.Property<int>("NumberOfUsers");
 

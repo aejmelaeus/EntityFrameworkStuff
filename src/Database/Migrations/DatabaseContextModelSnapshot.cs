@@ -61,8 +61,6 @@ namespace Database.Migrations
 
                     b.Property<DateTime?>("EndDateUtc");
 
-                    b.Property<Guid>("ExternalId");
-
                     b.Property<int>("NumberOfUsers");
 
                     b.Property<int>("OwnerId");

@@ -3,23 +3,21 @@ using System.Collections.Generic;
 
 namespace Domain.Models
 {
-    public class User
+    public class User : Aggretate
     {
         private User()
         {
             // For EF :)
         }
 
-        public User(string displayName, EmailAddress emailAddress)
+        public User(string displayName, EmailAddress emailAddress) : base(Guid.NewGuid())
         {
             Email = emailAddress;
             DisplayName = displayName;
         }
 
-        public int Id { get; set; }
-        public Guid ExternalId { get; set; }
-        public string DisplayName { get; set; }
-        public EmailAddress Email { get; set; }
+        public string DisplayName { get; private set; }
+        public EmailAddress Email { get; private set; }
 
         private readonly List<TenantUser> _tenantUsers = new List<TenantUser>();
         public IReadOnlyCollection<TenantUser> TenantUsers => _tenantUsers;

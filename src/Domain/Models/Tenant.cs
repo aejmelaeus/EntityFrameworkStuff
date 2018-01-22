@@ -3,23 +3,18 @@ using System.Collections.Generic;
 
 namespace Domain.Models
 {
-    public class Tenant
+    public class Tenant : Aggretate
     {
         private Tenant()
         {
             // For EF :)
         }
 
-        public Tenant(string name, int loggedInUserId)
+        public Tenant(string name, int loggedInUserId) : base(Guid.NewGuid())
         {
             Name = name;
-            ExternalId = Guid.NewGuid();
             _tenantUsers.Add(new TenantUser(TenantRole.Administrator, loggedInUserId));
         }
-
-        public int Id { get; private set; }
-
-        public Guid ExternalId { get; private set; }
 
         public string Name { get; private set; }
 

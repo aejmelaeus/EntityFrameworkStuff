@@ -118,7 +118,6 @@ namespace Database.Migrations
                     AssignedGroupId = table.Column<int>(nullable: true),
                     Days = table.Column<int>(nullable: false),
                     EndDateUtc = table.Column<DateTime>(nullable: true),
-                    ExternalId = table.Column<Guid>(nullable: false),
                     NumberOfUsers = table.Column<int>(nullable: false),
                     OwnerId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
