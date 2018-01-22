@@ -171,16 +171,9 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(128);
-
                     b.Property<Guid>("ExternalId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.HasIndex("ExternalId")
                         .IsUnique();
@@ -242,6 +235,28 @@ namespace Database.Migrations
                         .WithMany("TenantUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Domain.Models.User", b =>
+                {
+                    b.OwnsOne("Domain.Models.EmailAddress", "Email", b1 =>
+                        {
+                            b1.Property<int>("UserId");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(128);
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
+
+                            b1.ToTable("Users");
+
+                            b1.HasOne("Domain.Models.User")
+                                .WithOne("Email")
+                                .HasForeignKey("Domain.Models.EmailAddress", "UserId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 #pragma warning restore 612, 618
         }

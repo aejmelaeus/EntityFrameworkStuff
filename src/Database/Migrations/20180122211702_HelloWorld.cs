@@ -45,8 +45,8 @@ namespace Database.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DisplayName = table.Column<string>(maxLength: 128, nullable: false),
-                    Email = table.Column<string>(maxLength: 128, nullable: false),
-                    ExternalId = table.Column<Guid>(nullable: false)
+                    ExternalId = table.Column<Guid>(nullable: false),
+                    Email_Value = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -237,15 +237,15 @@ namespace Database.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_ExternalId",
                 table: "Users",
                 column: "ExternalId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email_Value",
+                table: "Users",
+                column: "Email_Value",
                 unique: true);
         }
 

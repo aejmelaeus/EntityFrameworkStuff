@@ -24,10 +24,6 @@ namespace Database
         {
             var userEntity = builder.Entity<User>();
 
-            userEntity.Property(_ => _.Email)
-                .IsRequired()
-                .HasMaxLength(128);
-
             userEntity.Property(_ => _.DisplayName)
                 .IsRequired()
                 .HasMaxLength(128);
@@ -35,14 +31,21 @@ namespace Database
             userEntity.Property(_ => _.ExternalId)
                 .IsRequired();
 
-            userEntity.HasIndex(u => u.Email)
-                .IsUnique();
-
             userEntity.HasIndex(u => u.ExternalId)
                 .IsUnique();
 
             userEntity.Metadata.FindNavigation(nameof(User.TenantUsers))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            userEntity.OwnsOne(s => s.Email, email =>
+            {
+                email.Property(c => c.Value)
+                    .IsRequired()
+                    .HasMaxLength(128);
+
+                email.HasIndex(_ => _.Value)
+                    .IsUnique();
+            });
         }
 
         private static void ConfigureTenantUser(ModelBuilder builder)
