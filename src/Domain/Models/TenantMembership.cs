@@ -1,19 +1,18 @@
 ﻿namespace Domain.Models
 {
-    public class TenantUser
+    public class TenantMembership : Entity
     {
-        private TenantUser()
+        private TenantMembership()
         {
             // For EF :)
         }
 
-        public TenantUser(TenantRole role, int userId)
+        public TenantMembership(TenantRole role, int userId, int tenantId)
         {
             Role = role;
             UserId = userId;
+            TenantId = tenantId;
         }
-
-        public int Id { get; private set; }
 
         public TenantRole Role { get; private set; }
         

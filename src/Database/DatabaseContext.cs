@@ -16,23 +16,25 @@ namespace Database
         protected override void OnModelCreating(ModelBuilder builder)
         {
             ConfigureGroup(builder);
-            ConfigureGroupMember(builder);
+            ConfigureGroupMembership(builder);
             ConfigureGroupLicense(builder);
             ConfigureProduct(builder);
             ConfigureTenant(builder);
-            ConfigureTenantUser(builder);
+            ConfigureTenantMembership(builder);
             ConfigureUser(builder);
         }
 
-        private void ConfigureGroupMember(ModelBuilder builder)
+        private void ConfigureGroupMembership(ModelBuilder builder)
         {
-            var groupMemberEntity = builder.Entity<GroupMember>();
+            var groupMembershipEntity = builder.Entity<GroupMembership>();
 
-            groupMemberEntity.HasOne<User>()
+            groupMembershipEntity.ToTable("GroupMemberships");
+
+            groupMembershipEntity.HasOne<User>()
                 .WithMany()
                 .HasForeignKey(_ => _.UserId);
 
-            groupMemberEntity.HasIndex(gm => new
+            groupMembershipEntity.HasIndex(gm => new
             {
                 gm.GroupId,
                 gm.UserId
@@ -55,7 +57,7 @@ namespace Database
             userEntity.HasIndex(u => u.ExternalId)
                 .IsUnique();
 
-            userEntity.Metadata.FindNavigation(nameof(User.TenantUsers))
+            userEntity.Metadata.FindNavigation(nameof(User.TenantMemberships))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
             userEntity.OwnsOne(s => s.Email, email =>
@@ -69,14 +71,16 @@ namespace Database
             });
         }
 
-        private static void ConfigureTenantUser(ModelBuilder builder)
+        private static void ConfigureTenantMembership(ModelBuilder builder)
         {
-            var tenantUserEntity = builder.Entity<TenantUser>();
+            var tenantMembershipEntity = builder.Entity<TenantMembership>();
 
-            tenantUserEntity.Property(_ => _.Role)
+            tenantMembershipEntity.ToTable("TenantMemberships");
+
+            tenantMembershipEntity.Property(_ => _.Role)
                 .IsRequired();
 
-            tenantUserEntity.HasIndex(tu => new
+            tenantMembershipEntity.HasIndex(tu => new
             {
                 tu.TenantId, tu.UserId
 
@@ -99,7 +103,7 @@ namespace Database
             tenantEntity.HasIndex(_ => _.ExternalId)
                 .IsUnique();
 
-            tenantEntity.Metadata.FindNavigation(nameof(Tenant.TenantUsers))
+            tenantEntity.Metadata.FindNavigation(nameof(Tenant.TenantMemberships))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
@@ -163,10 +167,10 @@ namespace Database
             groupEntity.HasIndex(_ => _.ExternalId)
                 .IsUnique();
 
-            groupEntity.Metadata.FindNavigation(nameof(Group.Licenses))
+            groupEntity.Metadata.FindNavigation(nameof(Group.GroupLicenses))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            groupEntity.Metadata.FindNavigation(nameof(Group.Members))
+            groupEntity.Metadata.FindNavigation(nameof(Group.GroupMemberships))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
             groupEntity.Property(_ => _.CreatedByUserId)

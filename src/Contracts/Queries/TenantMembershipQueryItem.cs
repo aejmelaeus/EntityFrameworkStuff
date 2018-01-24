@@ -2,7 +2,7 @@
 
 namespace Contracts.Queries
 {
-    public class TenantUserQueryItem
+    public class TenantMembershipQueryItem
     {
         public Guid Id { get; set; }
         public string DisplayName { get; set; }

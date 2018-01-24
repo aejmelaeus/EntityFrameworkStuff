@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Contracts.Messages.Events.TenantUser
+namespace Contracts.Messages.Events.TenantMembership
 {
     public class UserAddedToTenant : Event
     {

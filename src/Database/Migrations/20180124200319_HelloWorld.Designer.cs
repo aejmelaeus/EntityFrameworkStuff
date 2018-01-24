@@ -12,7 +12,7 @@ using System;
 namespace Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180124170148_HelloWorld")]
+    [Migration("20180124200319_HelloWorld")]
     partial class HelloWorld
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,7 +81,7 @@ namespace Database.Migrations
                     b.ToTable("GroupLicenses");
                 });
 
-            modelBuilder.Entity("Domain.Models.GroupMember", b =>
+            modelBuilder.Entity("Domain.Models.GroupMembership", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -97,7 +97,7 @@ namespace Database.Migrations
                     b.HasIndex("GroupId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("GroupMember");
+                    b.ToTable("GroupMemberships");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -142,7 +142,7 @@ namespace Database.Migrations
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("Domain.Models.TenantUser", b =>
+            modelBuilder.Entity("Domain.Models.TenantMembership", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -160,7 +160,7 @@ namespace Database.Migrations
                     b.HasIndex("TenantId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("TenantUser");
+                    b.ToTable("TenantMemberships");
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -198,7 +198,7 @@ namespace Database.Migrations
             modelBuilder.Entity("Domain.Models.GroupLicense", b =>
                 {
                     b.HasOne("Domain.Models.Group")
-                        .WithMany("Licenses")
+                        .WithMany("GroupLicenses")
                         .HasForeignKey("GroupId");
 
                     b.HasOne("Domain.Models.Product")
@@ -212,10 +212,10 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Domain.Models.GroupMember", b =>
+            modelBuilder.Entity("Domain.Models.GroupMembership", b =>
                 {
                     b.HasOne("Domain.Models.Group")
-                        .WithMany("Members")
+                        .WithMany("GroupMemberships")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -225,15 +225,15 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Domain.Models.TenantUser", b =>
+            modelBuilder.Entity("Domain.Models.TenantMembership", b =>
                 {
                     b.HasOne("Domain.Models.Tenant")
-                        .WithMany("TenantUsers")
+                        .WithMany("TenantMemberships")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Models.User")
-                        .WithMany("TenantUsers")
+                        .WithMany("TenantMemberships")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

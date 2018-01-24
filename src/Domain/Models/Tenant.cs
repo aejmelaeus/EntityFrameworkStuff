@@ -10,15 +10,9 @@ namespace Domain.Models
             // For EF :)
         }
 
-        public Tenant(string name, int loggedInUserId) : base(Guid.NewGuid())
-        {
-            Name = name;
-            _tenantUsers.Add(new TenantUser(TenantRole.Administrator, loggedInUserId));
-        }
-
         public string Name { get; private set; }
 
-        private readonly List<TenantUser> _tenantUsers = new List<TenantUser>();
-        public IReadOnlyCollection<TenantUser> TenantUsers => _tenantUsers;
+        private readonly List<TenantMembership> _tenantMemberships = new List<TenantMembership>();
+        public IReadOnlyCollection<TenantMembership> TenantMemberships => _tenantMemberships;
     }
 }

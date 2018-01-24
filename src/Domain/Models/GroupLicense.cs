@@ -4,6 +4,16 @@ namespace Domain.Models
 {
     public class GroupLicense : Aggretate
     {
+        static GroupLicense Create(User loggedInUser, Product product, int tenantId, int numberOfUsers, int days)
+        {
+            return new GroupLicense();
+        }
+
+        static GroupLicense CreateBeta(User loggedInUser, Product product, int tenantId)
+        {
+            return new GroupLicense();
+        }
+
         public GroupLicense() : base(Guid.Empty)
         {
             // TODO!

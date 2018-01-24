@@ -10,6 +10,13 @@ namespace Domain.Models
             // For EF :)
         }
 
+        internal User(int id, List<TenantMembership> tenantMemberships, string displayName, EmailAddress emailAddress) : 
+            this(displayName, emailAddress)
+        {
+            Id = id;
+            _tenantMemberships = tenantMemberships;
+        }
+
         public User(string displayName, EmailAddress emailAddress) : base(Guid.NewGuid())
         {
             Email = emailAddress;
@@ -19,7 +26,7 @@ namespace Domain.Models
         public string DisplayName { get; private set; }
         public EmailAddress Email { get; private set; }
 
-        private readonly List<TenantUser> _tenantUsers = new List<TenantUser>();
-        public IReadOnlyCollection<TenantUser> TenantUsers => _tenantUsers;
+        private readonly List<TenantMembership> _tenantMemberships = new List<TenantMembership>();
+        public IReadOnlyCollection<TenantMembership> TenantMemberships => _tenantMemberships;
     }
 }
