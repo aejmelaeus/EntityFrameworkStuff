@@ -18,24 +18,7 @@ namespace Database.Queries
 
         public async Task<GroupQueryItem> Execute(Guid externalId)
         {
-            var group = await _context.Groups
-                .Include(_ => _.Members)
-                .Include(_ => _.CreatedBy)
-                .SingleOrDefaultAsync(_ => _.ExternalId == externalId);
-
-            if (group == default(Group))
-            {
-                return null;
-            }
-
-            return new GroupQueryItem
-            {
-                CreatedByUserDisplayName = group.CreatedBy.DisplayName,
-                Name = group.Name,
-                CreatedByUserId = group.CreatedBy.ExternalId,
-                Id = group.ExternalId,
-                Members = null // TODO!
-            };
+            return null;
         }
     }
 }

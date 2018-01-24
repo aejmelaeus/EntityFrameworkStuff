@@ -26,7 +26,7 @@ namespace Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CreatedById");
+                    b.Property<int>("CreatedByUserId");
 
                     b.Property<DateTime>("CreatedUtc");
 
@@ -40,7 +40,7 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("ExternalId")
                         .IsUnique();
@@ -55,27 +55,27 @@ namespace Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AssignedGroupId");
-
                     b.Property<int>("Days");
 
                     b.Property<DateTime?>("EndDateUtc");
 
-                    b.Property<int>("NumberOfUsers");
+                    b.Property<int?>("GroupId");
 
-                    b.Property<int>("OwnerId");
+                    b.Property<int>("NumberOfUsers");
 
                     b.Property<int>("ProductId");
 
                     b.Property<DateTime?>("StartDateUtc");
 
+                    b.Property<int>("TenantId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedGroupId");
-
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("GroupLicenses");
                 });
@@ -87,15 +87,16 @@ namespace Database.Migrations
 
                     b.Property<int>("GroupId");
 
-                    b.Property<int>("TenantUserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("TenantUserId");
+                    b.HasIndex("GroupId", "UserId")
+                        .IsUnique();
 
-                    b.ToTable("GroupMembers");
+                    b.ToTable("GroupMember");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -153,11 +154,12 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("TenantUsers");
+                    b.HasIndex("TenantId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("TenantUser");
                 });
 
             modelBuilder.Entity("Domain.Models.User", b =>
@@ -181,55 +183,55 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Domain.Models.Group", b =>
                 {
-                    b.HasOne("Domain.Models.User", "CreatedBy")
+                    b.HasOne("Domain.Models.User")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
+                        .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Domain.Models.Tenant", "Tenant")
-                        .WithMany("Groups")
+                    b.HasOne("Domain.Models.Tenant")
+                        .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Models.GroupLicense", b =>
                 {
-                    b.HasOne("Domain.Models.Group", "AssignedGroup")
+                    b.HasOne("Domain.Models.Group")
                         .WithMany("Licenses")
-                        .HasForeignKey("AssignedGroupId");
+                        .HasForeignKey("GroupId");
 
-                    b.HasOne("Domain.Models.Tenant", "Owner")
-                        .WithMany("GroupLicenses")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Models.Product", "Product")
+                    b.HasOne("Domain.Models.Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Models.Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Models.GroupMember", b =>
                 {
-                    b.HasOne("Domain.Models.Group", "Group")
+                    b.HasOne("Domain.Models.Group")
                         .WithMany("Members")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Domain.Models.TenantUser", "TenantUser")
+                    b.HasOne("Domain.Models.User")
                         .WithMany()
-                        .HasForeignKey("TenantUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Models.TenantUser", b =>
                 {
-                    b.HasOne("Domain.Models.Tenant", "Tenant")
+                    b.HasOne("Domain.Models.Tenant")
                         .WithMany("TenantUsers")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Domain.Models.User", "User")
+                    b.HasOne("Domain.Models.User")
                         .WithMany("TenantUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

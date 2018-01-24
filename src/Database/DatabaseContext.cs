@@ -16,11 +16,27 @@ namespace Database
         protected override void OnModelCreating(ModelBuilder builder)
         {
             ConfigureGroup(builder);
+            ConfigureGroupMember(builder);
             ConfigureGroupLicense(builder);
             ConfigureProduct(builder);
             ConfigureTenant(builder);
             ConfigureTenantUser(builder);
             ConfigureUser(builder);
+        }
+
+        private void ConfigureGroupMember(ModelBuilder builder)
+        {
+            var groupMemberEntity = builder.Entity<GroupMember>();
+
+            groupMemberEntity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(_ => _.UserId);
+
+            groupMemberEntity.HasIndex(gm => new
+            {
+                gm.GroupId,
+                gm.UserId
+            }).IsUnique();
         }
 
         private static void ConfigureUser(ModelBuilder builder)
@@ -59,6 +75,12 @@ namespace Database
 
             tenantUserEntity.Property(_ => _.Role)
                 .IsRequired();
+
+            tenantUserEntity.HasIndex(tu => new
+            {
+                tu.TenantId, tu.UserId
+
+            }).IsUnique();
         }
 
         private static void ConfigureTenant(ModelBuilder builder)
@@ -76,12 +98,6 @@ namespace Database
 
             tenantEntity.HasIndex(_ => _.ExternalId)
                 .IsUnique();
-
-            tenantEntity.Metadata.FindNavigation(nameof(Tenant.GroupLicenses))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            tenantEntity.Metadata.FindNavigation(nameof(Tenant.Groups))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
 
             tenantEntity.Metadata.FindNavigation(nameof(Tenant.TenantUsers))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
@@ -118,6 +134,15 @@ namespace Database
 
             groupLicenseEntity.Property(_ => _.NumberOfUsers)
                 .IsRequired();
+
+            groupLicenseEntity.HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(_ => _.ProductId);
+
+            groupLicenseEntity.HasOne<Tenant>()
+                .WithMany()
+                .HasForeignKey(_ => _.TenantId);
+
         }
 
         private static void ConfigureGroup(ModelBuilder builder)
@@ -143,14 +168,23 @@ namespace Database
 
             groupEntity.Metadata.FindNavigation(nameof(Group.Members))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            groupEntity.Property(_ => _.CreatedByUserId)
+                .IsRequired();
+
+            groupEntity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(_ => _.CreatedByUserId);
+
+            groupEntity.HasOne<Tenant>()
+                .WithMany()
+                .HasForeignKey(_ => _.TenantId);
         }
 
         internal DbSet<Tenant> Tenants { get; set; }
         internal DbSet<User> Users { get; set; }
-        internal DbSet<TenantUser> TenantUsers { get; set; }
         internal DbSet<Group> Groups { get; set; }
         internal DbSet<GroupLicense> GroupLicenses { get; set; }
         internal DbSet<Product> Products { get; set; }
-        internal DbSet<GroupMember> GroupMembers { get; set; }
     }
 }

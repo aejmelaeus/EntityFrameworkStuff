@@ -4,7 +4,7 @@ using Contracts.Messages.Events;
 
 namespace Domain.Models
 {
-    public abstract class Aggretate
+    public abstract class Aggretate : Entity
     {
         private readonly List<Event> _events = new List<Event>();
 
@@ -28,7 +28,6 @@ namespace Domain.Models
             return _events;
         }
 
-        public int Id { get; private set; }
         public Guid ExternalId { get; private set; }
     }
 }

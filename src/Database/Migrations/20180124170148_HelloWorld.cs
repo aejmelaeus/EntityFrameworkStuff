@@ -59,7 +59,7 @@ namespace Database.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedById = table.Column<int>(nullable: false),
+                    CreatedByUserId = table.Column<int>(nullable: false),
                     CreatedUtc = table.Column<DateTime>(nullable: false),
                     ExternalId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
@@ -69,8 +69,8 @@ namespace Database.Migrations
                 {
                     table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Groups_Users_CreatedById",
-                        column: x => x.CreatedById,
+                        name: "FK_Groups_Users_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -83,7 +83,7 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TenantUsers",
+                name: "TenantUser",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -94,15 +94,15 @@ namespace Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TenantUsers", x => x.Id);
+                    table.PrimaryKey("PK_TenantUser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantUsers_Tenants_TenantId",
+                        name: "FK_TenantUser_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TenantUsers_Users_UserId",
+                        name: "FK_TenantUser_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -115,72 +115,67 @@ namespace Database.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AssignedGroupId = table.Column<int>(nullable: true),
                     Days = table.Column<int>(nullable: false),
                     EndDateUtc = table.Column<DateTime>(nullable: true),
+                    GroupId = table.Column<int>(nullable: true),
                     NumberOfUsers = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
-                    StartDateUtc = table.Column<DateTime>(nullable: true)
+                    StartDateUtc = table.Column<DateTime>(nullable: true),
+                    TenantId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GroupLicenses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupLicenses_Groups_AssignedGroupId",
-                        column: x => x.AssignedGroupId,
+                        name: "FK_GroupLicenses_Groups_GroupId",
+                        column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GroupLicenses_Tenants_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Tenants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_GroupLicenses_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupLicenses_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupMembers",
+                name: "GroupMember",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     GroupId = table.Column<int>(nullable: false),
-                    TenantUserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupMembers", x => x.Id);
+                    table.PrimaryKey("PK_GroupMember", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupMembers_Groups_GroupId",
+                        name: "FK_GroupMember_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupMembers_TenantUsers_TenantUserId",
-                        column: x => x.TenantUserId,
-                        principalTable: "TenantUsers",
+                        name: "FK_GroupMember_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupLicenses_AssignedGroupId",
+                name: "IX_GroupLicenses_GroupId",
                 table: "GroupLicenses",
-                column: "AssignedGroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupLicenses_OwnerId",
-                table: "GroupLicenses",
-                column: "OwnerId");
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupLicenses_ProductId",
@@ -188,19 +183,25 @@ namespace Database.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupMembers_GroupId",
-                table: "GroupMembers",
-                column: "GroupId");
+                name: "IX_GroupLicenses_TenantId",
+                table: "GroupLicenses",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupMembers_TenantUserId",
-                table: "GroupMembers",
-                column: "TenantUserId");
+                name: "IX_GroupMember_UserId",
+                table: "GroupMember",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_CreatedById",
+                name: "IX_GroupMember_GroupId_UserId",
+                table: "GroupMember",
+                columns: new[] { "GroupId", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_CreatedByUserId",
                 table: "Groups",
-                column: "CreatedById");
+                column: "CreatedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_ExternalId",
@@ -226,14 +227,15 @@ namespace Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantUsers_TenantId",
-                table: "TenantUsers",
-                column: "TenantId");
+                name: "IX_TenantUser_UserId",
+                table: "TenantUser",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TenantUsers_UserId",
-                table: "TenantUsers",
-                column: "UserId");
+                name: "IX_TenantUser_TenantId_UserId",
+                table: "TenantUser",
+                columns: new[] { "TenantId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ExternalId",
@@ -254,7 +256,10 @@ namespace Database.Migrations
                 name: "GroupLicenses");
 
             migrationBuilder.DropTable(
-                name: "GroupMembers");
+                name: "GroupMember");
+
+            migrationBuilder.DropTable(
+                name: "TenantUser");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -263,13 +268,10 @@ namespace Database.Migrations
                 name: "Groups");
 
             migrationBuilder.DropTable(
-                name: "TenantUsers");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Tenants");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }

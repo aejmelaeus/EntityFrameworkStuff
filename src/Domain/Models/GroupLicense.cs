@@ -13,14 +13,8 @@ namespace Domain.Models
         public int NumberOfUsers { get; private set; }
         public DateTime? StartDateUtc { get; private set; }
         public DateTime? EndDateUtc { get; private set; }
-
-        public int? AssignedGroupId { get; private set; }
-        public Group AssignedGroup { get; private set; }
-
-        public int OwnerId { get; private set; }
-        public Tenant Owner { get; private set; }
-
+        public int? GroupId { get; private set; }
+        public int TenantId { get; private set; }
         public int ProductId { get; private set; }
-        public Product Product { get; private set; }
     }
 }
